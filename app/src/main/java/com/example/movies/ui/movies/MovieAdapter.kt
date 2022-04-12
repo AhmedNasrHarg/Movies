@@ -11,8 +11,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.movies.R
 import com.example.movies.data.Movie
-
-class MovieAdapter(var context:Context) : RecyclerView.Adapter<MovieAdapter.ViewHolder>() {
+                                            //1.
+class MovieAdapter(var context:Context, val mItemClickListener:ItemClickListener) : RecyclerView.Adapter<MovieAdapter.ViewHolder>() {
+    //2.
+    interface ItemClickListener{
+        fun onItemClick(position: Int)
+        fun onLongClick(position: Int)
+    }
 
     var items= listOf<Movie>()
         set(value) {
@@ -20,7 +25,7 @@ class MovieAdapter(var context:Context) : RecyclerView.Adapter<MovieAdapter.View
         notifyDataSetChanged()
         }
     //Constructor
-    constructor(  context:Context,  items:List<Movie>) : this(context) {
+    constructor(  context:Context,  items:List<Movie>,  mItemClickListener:ItemClickListener) : this(context,mItemClickListener) {
         this.context=context
         this.items=  items
     }
@@ -45,7 +50,16 @@ class MovieAdapter(var context:Context) : RecyclerView.Adapter<MovieAdapter.View
 
     override fun getItemCount() = items.size
 
-    class ViewHolder(itemVeiw: View): RecyclerView.ViewHolder(itemVeiw){
+    inner class ViewHolder(itemVeiw: View): RecyclerView.ViewHolder(itemVeiw){
+        init {
+            itemVeiw.setOnClickListener{
+                mItemClickListener.onItemClick(adapterPosition)
+            }
+            itemVeiw.setOnLongClickListener{
+                mItemClickListener.onLongClick(adapterPosition)
+                return@setOnLongClickListener true
+            }
+        }
         val movieImg: ImageView = itemView.findViewById(R.id.movie_imageView)
         val title: TextView = itemVeiw.findViewById(R.id.movie_title)
     }

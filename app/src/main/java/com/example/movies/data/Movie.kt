@@ -4,6 +4,7 @@ import android.widget.ImageView
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
+import java.io.Serializable
 
 data class Movie(val title:String,
                  val poster_path:String,
@@ -11,7 +12,7 @@ data class Movie(val title:String,
                  val vote_average:Double,
                  val vote_count:Int,
                  val overview: String
-                 ) {}
+                 ) :Serializable{}
 data class MoviesResponse(val page:Int,
                           val results:List<Movie>,
                           val total_pages:Int,
